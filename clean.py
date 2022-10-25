@@ -20,7 +20,7 @@ def main() -> None:
         print("Error: files are still being used")
 
 
-def delete_files(downloads_folder: str) -> None:
+def delete_files(downloads_folder: str) -> int:
     """
         Function that deletes all the downloaded files when called
         :param downloads_folder: The path that cointains all the downloaded files
@@ -34,7 +34,8 @@ def delete_files(downloads_folder: str) -> None:
 
     for filename in files:
         # .ini files are not recommended to delete because
-        # they contain information about how the folder is displayed to the user
+        # they contain information about how Windows will display the folder to
+        # the user
         if not filename.endswith('.ini'):
             try:
                 os.remove(PATH + filename)
@@ -42,6 +43,13 @@ def delete_files(downloads_folder: str) -> None:
                 return 105
     
     return 0
+
+
+def files_number() -> int:
+    """
+        Function that returns the number of files existing in the Downloads folder (if any)
+    """
+    return len(os.listdir(PATH))
 
 
 if __name__ == '__main__':
