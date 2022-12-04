@@ -2,7 +2,6 @@ import os
 from tkinter import *
 from tkinter.ttk import *
 from .custom_exceptions import FolderEmptyError
-from .custom_exceptions import FolderEmptyError
 from .variables import (
     PATH, 
     LIST_OF_FILES,
