@@ -26,7 +26,7 @@ def delete_files(downloads_folder: str) -> None:
         None
     """
 
-    if not len(os.listdir(downloads_folder)) > 1:
+    if not len(LIST_OF_FILES) > 1:
         raise FolderEmptyError(message="Oops folder is currently empty")
 
     # Getting all the current downloaded files
