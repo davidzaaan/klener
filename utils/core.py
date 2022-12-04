@@ -15,7 +15,7 @@ from .variables import (
     master
 )
 
-def delete_files(downloads_folder: str) -> None:
+def delete_files() -> None:
     """
         Function that deletes all the downloaded files when called
 
@@ -75,7 +75,7 @@ def display_sec_window() -> Toplevel:
 
 def delete_all() -> None:
     """
-        Function that will delete all the files in the Downloads directory
+        Function that will call the delete_files function and display information about it
     """
     try:
         info_window: Toplevel = display_sec_window()
