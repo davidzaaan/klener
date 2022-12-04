@@ -78,7 +78,7 @@ def delete_all() -> None:
     """
     try:
         info_window: Toplevel = display_sec_window()
-        delete_files(PATH) # Delete all
+        delete_files() # Delete all
 
         # Information about process completion
         info_label = Label(info_window, text=f"{FILE_NUM} files were deleted successfully!")
