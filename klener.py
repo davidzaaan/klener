@@ -3,7 +3,7 @@ from utils.core import (
     display_main_window,
     display_main_label,
     display_main_btns,
-    set_okclose_btn
+    display_okclose_btn
 )
 
 from utils.variables import FILE_NUM, master
@@ -19,7 +19,7 @@ def start() -> None:
         display_main_btns()
     else:
         display_main_label()
-        set_okclose_btn()
+        display_okclose_btn()
 
     master.mainloop()
 

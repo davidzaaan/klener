@@ -1,7 +1,6 @@
 import os
 from tkinter import *
 from tkinter.ttk import *
-from .custom_exceptions import FolderEmptyError
 from .variables import (
     PATH, 
     LIST_OF_FILES,
@@ -24,14 +23,7 @@ def delete_files() -> None:
         Return
         None
     """
-
-    if not len(LIST_OF_FILES) > 1:
-        raise FolderEmptyError(message="Oops folder is currently empty")
-
-    # Getting all the current downloaded files
-    files = (file for file in LIST_OF_FILES)
-
-    for filename in files:
+    for filename in LIST_OF_FILES:
         # .ini files contain information about how Windows display the folder
         if not filename.endswith('.ini'):
             os.remove(path=PATH + filename)
@@ -76,19 +68,12 @@ def delete_all() -> None:
     """
         Function that will call the delete_files function and display information about it
     """
-    try:
-        info_window: Toplevel = display_sec_window()
-        delete_files() # Delete all
+    info_window: Toplevel = display_sec_window()
+    delete_files() # Deleting all files...
 
-        # Information about process completion
-        info_label = Label(info_window, text=f"{FILE_NUM} files were deleted successfully!")
-        info_label.pack(pady=20)
-
-    except FolderEmptyError as err:
-
-        # Information about process completion
-        info_label = Label(info_window, text=err)
-        info_label.pack(pady=20)
+    # Information about process completion
+    info_label = Label(info_window, text=f"{FILE_NUM} files were deleted successfully!")
+    info_label.pack(pady=20)
 
 
 def display_main_label(info_text: str = "You have no files to delete") -> None:
@@ -113,7 +98,7 @@ def display_main_btns() -> None:
     select_btn.place(x=160, y=(WINDOW_HEIGHT - 60))
 
 
-def set_okclose_btn() -> None:
+def display_okclose_btn() -> None:
     """
         Function that creates and display an optional close button in case that there is no files to delete 
         in the user's downloads folder
