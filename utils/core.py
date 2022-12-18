@@ -8,10 +8,11 @@ from .variables import (
     WINDOW_WIDTH,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
-    FILE_NUM,
     # Main window
     master
 )
+
+#### Files deletion functions ####
 
 def delete_files() -> None:
     """
@@ -20,9 +21,22 @@ def delete_files() -> None:
     for filename in LIST_OF_FILES:
         os.remove(path=PATH + filename)
 
-#### Tkinter functionality ####
 
-def display_main_window() -> None:
+def delete_all() -> None:
+    """
+        Function that will call the delete_files function and display information about the process
+    """
+    info_window: Toplevel = display_info_window()
+    delete_files() # Deleting all files...
+
+    # Information about process completion
+    info_label = Label(info_window, text=f"Files deleted successfully")
+    info_label.pack(pady=20)
+
+
+#### Main functionality ####
+
+def display_main_window(files_num: int) -> None:
     """
         Function that will set and display the Tkinter main window
     """
@@ -30,8 +44,29 @@ def display_main_window() -> None:
     master.title("Klener")
     master.resizable(width=False, height=False)
 
+    if files_num > 0:
+        # Main label creation
+        label: Label = Label(master, text=f"You have {files_num} downloaded files")
+        label.pack(pady=40)
+        
+        # Button that deletes all existing downloaded files
+        delete_btn = Button(master, text="Delete all", command=delete_all)
+        delete_btn.place(x=80, y=(WINDOW_HEIGHT - 60))
 
-def display_sec_window() -> Toplevel:
+        # Button to select certain files to delete
+        select_btn = Button(master, text="Select what to delete", command=create_sf_window)
+        select_btn.place(x=160, y=(WINDOW_HEIGHT - 60))
+    else:
+        # Main label creation
+        label: Label = Label(master, text=f"No new files so far")
+        label.pack(pady=40)
+
+        # Button to close main window when there is no files to delete
+        okclose_btn = Button(master, text="Ok, close", command=master.destroy)
+        okclose_btn.pack(side=BOTTOM, pady=30)
+
+
+def display_info_window() -> Toplevel:
     """
         Function that will create and display a new information window with the status of the files deletion
 
@@ -43,74 +78,13 @@ def display_sec_window() -> Toplevel:
     window.title("Info")
     window.resizable(width=False, height=False)
     
+    # Close info window button
     close_btn = Button(window, text="Finish", command=master.destroy)
     close_btn.pack(side=BOTTOM, pady=40)
 
     return window
-
-
-def delete_all() -> None:
-    """
-        Function that will call the delete_files function and display information about the process
-    """
-    info_window: Toplevel = display_sec_window()
-    delete_files() # Deleting all files...
-
-    # Information about process completion
-    info_label = Label(info_window, text=f"{FILE_NUM} files were deleted successfully!")
-    info_label.pack(pady=20)
-
-
-def display_main_label(info_text: str = "You have no files to delete") -> None:
-    """
-        Function that will create and display the text below on the Tkinter's main window
-    """
-    label: Label = Label(master, text=info_text)
-    label.pack(pady=40)
-
-
-def display_main_btns() -> None:
-    """
-        Function that will create and display the buttons for interaction on the Tkinter's main window
-    """
-    # Button that deletes all existing downloaded files
-    delete_btn = Button(master, text="Delete all", command=delete_all)
-    delete_btn.place(x=80, y=(WINDOW_HEIGHT - 60))
-
-    # Button to select certain files to delete
-    select_btn = Button(master, text="Select what to delete", command=create_sf_window)
-    select_btn.place(x=160, y=(WINDOW_HEIGHT - 60))
-
-
-def display_okclose_btn() -> None:
-    """
-        Function that creates and display an optional close button in case that there is no files to delete 
-        in the user's downloads folder
-    """
-    okclose_btn = Button(master, text="Ok, close", command=master.destroy)
-    okclose_btn.pack(side=BOTTOM, pady=30)
 
 #### ONLY SELECTED FILES FUNCTIONALITY ####
-
-def display_sf_second_window(sfwindow: Toplevel) -> Toplevel:
-    """
-        Function that will create and display a new information window with the status of the
-        selected files deletion
-
-        Return
-            A Tkinter's Toplevel object with the secondary window
-    """
-    window: Toplevel = Toplevel(sfwindow)
-    window.geometry(f"200x170+{SCREEN_WIDTH + 50}+{SCREEN_HEIGHT + 40}")
-    window.title("Info")
-    window.resizable(width=False, height=False)
-    
-    # Close information window button
-    close_btn = Button(window, text="Finish", command=master.destroy)
-    close_btn.pack(side=BOTTOM, pady=40)
-
-    return window
-
 
 def create_sf_window() -> None:
     """
@@ -169,3 +143,23 @@ def create_sf_window() -> None:
     # Delete all files button
     delete_anyway_btn = Button(selectfiles_window, text="Delete all anyway", command=delete_all)
     delete_anyway_btn.place(x=260, y=(WINDOW_HEIGHT + 60))
+
+
+def display_sf_second_window(sfwindow: Toplevel) -> Toplevel:
+    """
+        Function that will create and display a new information window with the status of the
+        selected files deletion
+
+        Return
+            A Tkinter's Toplevel object with the secondary window
+    """
+    window: Toplevel = Toplevel(sfwindow)
+    window.geometry(f"200x170+{SCREEN_WIDTH + 50}+{SCREEN_HEIGHT + 40}")
+    window.title("Info")
+    window.resizable(width=False, height=False)
+    
+    # Close information window button
+    close_btn = Button(window, text="Finish", command=master.destroy)
+    close_btn.pack(side=BOTTOM, pady=40)
+
+    return window
